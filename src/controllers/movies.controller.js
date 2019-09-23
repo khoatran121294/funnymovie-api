@@ -1,8 +1,9 @@
 import { Movie } from "../models/movies";
+import { movies as dummyMovies } from "../../dummy-data/movies";
 
 export const getMovies = async (req, res, next) => {
   const movies = await Movie.findAll();
-  return res.json(movies);
+  return res.json(dummyMovies);
 };
 
 export const addMovie = async (req, res, next) => {

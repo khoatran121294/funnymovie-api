@@ -10,6 +10,7 @@
     "production": "npm run build && nodemon bin/production",
     "run-prod": "node bin/production",
     "run-dev": "NODE_ENV=development nodemon bin/dev",
+    "run-test": "NODE_ENV=test mocha --require babel-register tests/*.js --exit",
     "migrate": "NODE_ENV=development npx sequelize-cli db:migrate"
   },
   "dependencies": {
