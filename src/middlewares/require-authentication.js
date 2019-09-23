@@ -6,7 +6,7 @@ export const requireAuthentication = async (req, res, next) => {
   if (!token) return res.status(401).send({ error: "token required" });
   try {
     const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    req.account = decoded;
     next();
   } catch (err) {
     res.status(401).send({ error: "invalid token" });
