@@ -48,3 +48,5 @@ app.use(function(err, req, res, next) {
 server.listen(port, async () => {
   console.log("Server is running port " + port);
 });
+
+export { server };

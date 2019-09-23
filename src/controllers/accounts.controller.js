@@ -1,17 +1,23 @@
 import { Account } from "../models/accounts";
 import { appError } from "../errors/app.error";
+import { HTTP_STATUS_CODE } from "../app.constant";
+
 var jwt = require("jsonwebtoken");
 var bcryptjs = require("bcryptjs");
 
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
-  const account = await Account.findOne({ email });
-  if (!account) throw appError("Email is not existed", 401);
+  const account = await Account.findOne({
+    where: {
+      email
+    }
+  });
+  if (!account) throw appError("Email is not existed", HTTP_STATUS_CODE.BAD_REQUEST);
   var passwordIsValid = bcryptjs.compareSync(
     password,
     account.password
   );
-  if (!passwordIsValid) throw appError("Password is invalid", 401);
+  if (!passwordIsValid) throw appError("Password is invalid", HTTP_STATUS_CODE.BAD_REQUEST);
   const userInfo = {
     id: account.id,
     email: account.email
@@ -28,8 +34,12 @@ export const login = async (req, res, next) => {
 
 export const register = async (req, res, next) => {
   const { email, password } = req.body;
-  const account = await Account.findOne({ email });
-  if (account) throw appError("Account is existed", 400);
+  const account = await Account.findOne({
+    where: {
+      email
+    }
+  });
+  if (account) throw appError("Account is existed", HTTP_STATUS_CODE.BAD_REQUEST);
 
   const salt_key = await bcryptjs.genSaltSync(10);
   const pass_hash = await bcryptjs.hashSync(password, salt_key);
